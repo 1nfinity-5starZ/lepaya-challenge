@@ -34,10 +34,13 @@ export const turnHistorySlice = createSlice({
         date: new Date().toISOString(),
       });
     },
+    clearTurnHistory: (state) => {
+      state.history = [];
+    },
   },
 });
 
-export const { addTurnHistory } = turnHistorySlice.actions;
+export const { addTurnHistory, clearTurnHistory } = turnHistorySlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

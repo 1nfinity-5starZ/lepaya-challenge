@@ -12,6 +12,7 @@ const CardContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 16px;
+  margin: 48px auto 24px;
 `;
 
 const GameOptions: React.FC = () => {
@@ -20,8 +21,10 @@ const GameOptions: React.FC = () => {
     <section>
       <h2>Choose the number of cards</h2>
       <CardContainer>
-        {options.map((option) => (
-          <Card onClick={() => dispatch(setCardNumber(option))}>{option}</Card>
+        {options.map((option, i) => (
+          <Card key={i} onClick={() => dispatch(setCardNumber(option))}>
+            <h2>{option}</h2>
+          </Card>
         ))}
       </CardContainer>
     </section>

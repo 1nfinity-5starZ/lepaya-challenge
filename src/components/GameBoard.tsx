@@ -7,17 +7,23 @@ import Card from "./Card";
 import {
   setGameStatus,
   addUserCard,
-  ICardNumber,
+  IGameStatus,
 } from "../reducers/game/gameSlice";
-import { createReadStream } from "fs";
+import Button from "./Button";
 
 const CardContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
-  max-width: 424px;
-  margin: 0 auto;
+  margin: 48px auto 24px;
+`;
+
+const GameFinishMessage = styled.div<{ status: IGameStatus }>`
+  font-size: 2em;
+  margin-bottom: 1em;
+  color: ${({ theme, status }) =>
+    status === "win" ? theme.light.success : theme.light.error};
 `;
 
 const GameBoard: React.FC = () => {
@@ -38,6 +44,7 @@ const GameBoard: React.FC = () => {
           return (
             <>
               <Card
+                key={i}
                 hidden={cardHidden}
                 onClick={
                   gameState.status === "playing" && cardHidden
@@ -45,17 +52,26 @@ const GameBoard: React.FC = () => {
                     : undefined
                 }
               >
-                {card}
+                <h2>{card}</h2>
               </Card>
-              {(i + 1) % 4 == 0 && <div style={{ flexBasis: "100%" }} />}
+              {(i + 1) % 4 === 0 && <div style={{ flexBasis: "100%" }} />}
             </>
           );
         })}
       </CardContainer>
       {gameState.status === "initial" && (
-        <button onClick={() => dispatch(setGameStatus("playing"))}>
-          Start
-        </button>
+        <Button onClick={() => dispatch(setGameStatus("playing"))}>Play</Button>
+      )}
+      {["loss", "win"].includes(gameState.status) && (
+        <div>
+          <GameFinishMessage status={gameState.status}>
+            {gameState.status === "loss" && "You lost"}
+            {gameState.status === "win" && "You won"}
+          </GameFinishMessage>
+          <Button onClick={() => dispatch(setGameStatus("new"))}>
+            Play again
+          </Button>
+        </div>
       )}
     </section>
   );

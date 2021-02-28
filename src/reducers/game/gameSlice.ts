@@ -26,16 +26,22 @@ export const gameSlice = createSlice({
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
     setCardNumber: (state, action: PayloadAction<ICardNumber>) => {
-      state.cardNumber = action.payload;
+      // Initialize numbers array
+      const numberPoolSize = 100;
+      const numberPool = Array.from(
+        { length: numberPoolSize },
+        (_, i) => i + 1
+      );
 
       let newCardSequence: number[] = [];
       for (let i = 0; i < action.payload; i++) {
-        let item;
-        do {
-          item = Math.floor(Math.random() * 100);
-        } while (newCardSequence.indexOf(item) >= 0);
-        newCardSequence.push(item);
+        const index = Math.floor(Math.random() * numberPool.length);
+        const item = numberPool.splice(index, 1);
+        newCardSequence.push(item[0]);
       }
+
+      // Set all state accordingly
+      state.cardNumber = action.payload;
       state.cardSequence = newCardSequence;
       state.winSequence = [...newCardSequence].sort((a, b) => a - b);
       state.status = "initial";

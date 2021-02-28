@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ThemeProvider } from "styled-components";
 import "./index.css";
 import App from "./App";
 import { store, persistor } from "./store/store";
@@ -7,11 +8,23 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { PersistGate } from "redux-persist/integration/react";
 
+const theme = {
+  light: {
+    foreground: "#222",
+    background: "#fff",
+    primary: "#ffbd18",
+    success: "#6ccbdf",
+    error: "#ee0264",
+  },
+};
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>,
